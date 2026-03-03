@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, FileText, ArrowLeft, Trash2, ChevronDown, ChevronUp, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, calculateRiskLevel, getRiskBadgeClass, formatDate, type RiskLevel } from "@/lib/utils";
+import { generateId, calculateRiskLevel, getRiskBadgeClass, formatDate, type RiskLevel } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface RAMSStep {
     id: string;
@@ -39,7 +40,7 @@ const PPE_LIST = [
 ];
 
 export default function RAMSPage() {
-    const [items, setItems] = useState<RAMS[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<RAMS>({ module: "rams", storeKey: "rams" });
     const [showForm, setShowForm] = useState(false);
     const [steps, setSteps] = useState<RAMSStep[]>([
         { id: "1", description: "", hazards: "", controls: "", responsiblePerson: "" },
@@ -49,10 +50,6 @@ export default function RAMSPage() {
         taskDescription: "", ppeRequired: [] as string[], plantEquipment: "",
         overallLikelihood: 3, overallSeverity: 3, emergencyProcedures: "", reviewDate: "",
     });
-
-    useEffect(() => {
-        setItems(loadFromStore<RAMS[]>(STORE_KEY, []));
-    }, []);
 
     const togglePPE = (ppe: string) => {
         setForm({
@@ -80,9 +77,7 @@ export default function RAMSPage() {
         if (!form.taskTitle.trim()) return;
         const riskLevel = calculateRiskLevel(form.overallLikelihood, form.overallSeverity);
         const newItem: RAMS = { id: generateId(), ...form, steps, riskLevel, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setSteps([{ id: "1", description: "", hazards: "", controls: "", responsiblePerson: "" }]);
         setForm({
@@ -92,11 +87,7 @@ export default function RAMSPage() {
         });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: RAMS) => {
         const pdf = new SafeGuardPDF();

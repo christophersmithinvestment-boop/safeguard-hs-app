@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, GraduationCap, ArrowLeft, Trash2, AlertCircle, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface TrainingRecord {
     id: string;
@@ -33,27 +34,12 @@ const COURSE_TYPES = [
 ];
 
 export default function TrainingRecordsPage() {
-    const [items, setItems] = useState<TrainingRecord[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<TrainingRecord>({ module: "training_records", storeKey: "training_records" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         employeeName: "", department: "", courseName: "", courseType: "",
         provider: "", dateCompleted: "", expiryDate: "", certificateRef: "", notes: "",
     });
-
-    useEffect(() => {
-        const raw = loadFromStore<TrainingRecord[]>(STORE_KEY, []);
-        // Auto-update status based on dates
-        const updated = raw.map((r) => {
-            if (!r.expiryDate) return { ...r, status: "valid" as const };
-            const exp = new Date(r.expiryDate);
-            const now = new Date();
-            const diff = exp.getTime() - now.getTime();
-            if (diff < 0) return { ...r, status: "expired" as const };
-            if (diff < 30 * 24 * 60 * 60 * 1000) return { ...r, status: "expiring" as const };
-            return { ...r, status: "valid" as const };
-        });
-        setItems(updated);
-    }, []);
 
     const handleSave = () => {
         if (!form.employeeName.trim() || !form.courseName.trim()) return;
@@ -64,14 +50,12 @@ export default function TrainingRecordsPage() {
             else if (diff < 30 * 24 * 60 * 60 * 1000) status = "expiring";
         }
         const newItem: TrainingRecord = { id: generateId(), ...form, status, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ employeeName: "", department: "", courseName: "", courseType: "", provider: "", dateCompleted: "", expiryDate: "", certificateRef: "", notes: "" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: TrainingRecord) => {
         const pdf = new SafeGuardPDF();

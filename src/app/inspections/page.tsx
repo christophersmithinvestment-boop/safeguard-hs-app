@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Search, ArrowLeft, Trash2, Check, X, Minus, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface ChecklistItem {
     id: string;
@@ -68,15 +69,11 @@ function buildCategories(): InspectionCategory[] {
 }
 
 export default function InspectionsPage() {
-    const [items, setItems] = useState<Inspection[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<Inspection>({ module: "inspections", storeKey: "inspections" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({ siteName: "", inspectorName: "", date: "", overallNotes: "" });
     const [categories, setCategories] = useState<InspectionCategory[]>(() => buildCategories());
     const [expandedCat, setExpandedCat] = useState<string | null>(DEFAULT_CATEGORIES[0]?.name || null);
-
-    useEffect(() => {
-        setItems(loadFromStore<Inspection[]>(STORE_KEY, []));
-    }, []);
 
     const toggleStatus = (catName: string, itemId: string) => {
         setCategories((prev) =>
@@ -124,19 +121,13 @@ export default function InspectionsPage() {
             totalPassed: passed.length,
             createdAt: new Date().toISOString(),
         };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ siteName: "", inspectorName: "", date: "", overallNotes: "" });
         setCategories(buildCategories());
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: Inspection) => {
         const pdf = new SafeGuardPDF();

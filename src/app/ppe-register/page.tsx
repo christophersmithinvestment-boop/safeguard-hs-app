@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, HardHat, ArrowLeft, Trash2, AlertCircle, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface PPERecord {
     id: string;
@@ -31,7 +32,7 @@ const PPE_TYPES = [
 ];
 
 export default function PPERegisterPage() {
-    const [items, setItems] = useState<PPERecord[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<PPERecord>({ module: "ppe_register", storeKey: "ppe_register" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         employeeName: "", department: "", ppeType: "", manufacturer: "", serialNumber: "",
@@ -39,19 +40,15 @@ export default function PPERegisterPage() {
         lastInspected: "", notes: "",
     });
 
-    useEffect(() => { setItems(loadFromStore<PPERecord[]>(STORE_KEY, [])); }, []);
-
     const handleSave = () => {
         if (!form.employeeName.trim() || !form.ppeType) return;
         const newItem: PPERecord = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ employeeName: "", department: "", ppeType: "", manufacturer: "", serialNumber: "", dateIssued: "", expiryDate: "", condition: "good", lastInspected: "", notes: "" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: PPERecord) => {
         const pdf = new SafeGuardPDF();

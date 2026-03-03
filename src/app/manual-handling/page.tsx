@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Dumbbell, ArrowLeft, Trash2, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, calculateRiskLevel, getRiskBadgeClass, formatDate, type RiskLevel } from "@/lib/utils";
+import { generateId, calculateRiskLevel, getRiskBadgeClass, formatDate, type RiskLevel } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface ManualHandlingAssessment {
     id: string;
@@ -33,7 +34,7 @@ interface ManualHandlingAssessment {
 const STORE_KEY = "manual_handling";
 
 export default function ManualHandlingPage() {
-    const [items, setItems] = useState<ManualHandlingAssessment[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<ManualHandlingAssessment>({ module: "manual_handling", storeKey: "manual_handling" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         taskDescription: "", location: "", assessor: "", loadWeight: "", loadDescription: "",
@@ -42,21 +43,17 @@ export default function ManualHandlingPage() {
         residualLikelihood: 1, residualSeverity: 1, reviewDate: "",
     });
 
-    useEffect(() => { setItems(loadFromStore<ManualHandlingAssessment[]>(STORE_KEY, [])); }, []);
-
     const handleSave = () => {
         if (!form.taskDescription.trim()) return;
         const riskLevel = calculateRiskLevel(form.likelihood, form.severity);
         const residualRiskLevel = calculateRiskLevel(form.residualLikelihood, form.residualSeverity);
         const newItem: ManualHandlingAssessment = { id: generateId(), ...form, riskLevel, residualRiskLevel, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ taskDescription: "", location: "", assessor: "", loadWeight: "", loadDescription: "", frequency: "", distance: "", taskFactors: "", individualFactors: "", loadFactors: "", environmentFactors: "", likelihood: 3, severity: 3, controlMeasures: "", residualLikelihood: 1, residualSeverity: 1, reviewDate: "" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: ManualHandlingAssessment) => {
         const pdf = new SafeGuardPDF();

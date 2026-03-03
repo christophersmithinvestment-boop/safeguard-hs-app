@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, TriangleAlert, ArrowLeft, Trash2, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDateTime } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface NearMiss {
     id: string;
@@ -26,7 +27,7 @@ const CATEGORIES = [
 ];
 
 export default function NearMissPage() {
-    const [items, setItems] = useState<NearMiss[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<NearMiss>({ module: "near_misses", storeKey: "near_misses" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         description: "", location: "", dateTime: "",
@@ -34,25 +35,15 @@ export default function NearMissPage() {
         suggestedAction: "", reportedBy: "", category: "",
     });
 
-    useEffect(() => {
-        setItems(loadFromStore<NearMiss[]>(STORE_KEY, []));
-    }, []);
-
     const handleSave = () => {
         if (!form.description.trim()) return;
         const newItem: NearMiss = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ description: "", location: "", dateTime: "", potentialSeverity: "medium", suggestedAction: "", reportedBy: "", category: "" });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: NearMiss) => {
         const pdf = new SafeGuardPDF();

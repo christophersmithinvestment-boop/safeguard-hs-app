@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, FlaskConical, ArrowLeft, Trash2, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface COSHHAssessment {
     id: string;
@@ -40,7 +41,7 @@ const PPE_OPTIONS = [
 ];
 
 export default function COSHHPage() {
-    const [items, setItems] = useState<COSHHAssessment[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<COSHHAssessment>({ module: "coshh_assessments", storeKey: "coshh_assessments" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         substanceName: "", manufacturer: "", usedFor: "", location: "",
@@ -49,19 +50,13 @@ export default function COSHHPage() {
         emergencyProcedures: "", storageRequirements: "", assessor: "", reviewDate: "",
     });
 
-    useEffect(() => {
-        setItems(loadFromStore<COSHHAssessment[]>(STORE_KEY, []));
-    }, []);
-
     const toggleArrayItem = (arr: string[], item: string) =>
         arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
 
     const handleSave = () => {
         if (!form.substanceName.trim()) return;
         const newItem: COSHHAssessment = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({
             substanceName: "", manufacturer: "", usedFor: "", location: "",
@@ -70,11 +65,7 @@ export default function COSHHPage() {
         });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: COSHHAssessment) => {
         const pdf = new SafeGuardPDF();

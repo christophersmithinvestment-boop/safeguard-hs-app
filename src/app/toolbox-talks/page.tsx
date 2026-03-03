@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Megaphone, ArrowLeft, Trash2, Users, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface ToolboxTalk {
     id: string;
@@ -25,17 +26,13 @@ const SUGGESTED_TOPICS = [
 ];
 
 export default function ToolboxTalksPage() {
-    const [items, setItems] = useState<ToolboxTalk[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<ToolboxTalk>({ module: "toolbox_talks", storeKey: "toolbox_talks" });
     const [showForm, setShowForm] = useState(false);
     const [newAttendee, setNewAttendee] = useState("");
     const [form, setForm] = useState({
         topic: "", presenter: "", date: "", keyPoints: "",
         attendees: [] as string[], duration: "",
     });
-
-    useEffect(() => {
-        setItems(loadFromStore<ToolboxTalk[]>(STORE_KEY, []));
-    }, []);
 
     const addAttendee = () => {
         if (!newAttendee.trim()) return;
@@ -50,18 +47,12 @@ export default function ToolboxTalksPage() {
     const handleSave = () => {
         if (!form.topic.trim()) return;
         const newItem: ToolboxTalk = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ topic: "", presenter: "", date: "", keyPoints: "", attendees: [], duration: "" });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: ToolboxTalk) => {
         const pdf = new SafeGuardPDF();

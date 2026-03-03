@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, ShieldCheck, ArrowLeft, Trash2, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface Permit {
     id: string;
@@ -35,7 +36,7 @@ const PERMIT_TYPES = [
 ];
 
 export default function PermitsPage() {
-    const [items, setItems] = useState<Permit[]>([]);
+    const { items, loading, addItem, removeItem, editItem } = useModuleData<Permit>({ module: "permits", storeKey: "permits" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         permitType: "", description: "", location: "", requestedBy: "",
@@ -44,16 +45,10 @@ export default function PermitsPage() {
         authorisedBy: "", status: "draft" as Permit["status"],
     });
 
-    useEffect(() => {
-        setItems(loadFromStore<Permit[]>(STORE_KEY, []));
-    }, []);
-
     const handleSave = () => {
         if (!form.permitType || !form.description.trim()) return;
         const newItem: Permit = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({
             permitType: "", description: "", location: "", requestedBy: "",
@@ -63,11 +58,7 @@ export default function PermitsPage() {
         });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: Permit) => {
         const pdf = new SafeGuardPDF();
@@ -92,9 +83,8 @@ export default function PermitsPage() {
     };
 
     const updateStatus = (id: string, status: Permit["status"]) => {
-        const updated = items.map((i) => (i.id === id ? { ...i, status } : i));
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        const item = items.find((i) => i.id === id);
+        if (item) editItem(id, { ...item, status });
     };
 
     const statusBadge = (s: string) => {

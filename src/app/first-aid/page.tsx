@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, HeartPulse, ArrowLeft, Trash2, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDateTime } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface FirstAidEntry {
     id: string;
@@ -18,7 +19,7 @@ interface FirstAidEntry {
     createdAt: string;
 }
 
-const STORE_KEY = "first_aid_log";
+
 
 const INJURY_TYPES = [
     "Cut / Wound", "Burn / Scald", "Bruise / Swelling", "Sprain / Strain",
@@ -28,7 +29,7 @@ const INJURY_TYPES = [
 ];
 
 export default function FirstAidPage() {
-    const [items, setItems] = useState<FirstAidEntry[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<FirstAidEntry>({ module: "first_aid_log", storeKey: "first_aid_log" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         dateTime: "", patientName: "", location: "", injuryIllness: "",
@@ -36,19 +37,15 @@ export default function FirstAidPage() {
         followUp: "",
     });
 
-    useEffect(() => { setItems(loadFromStore<FirstAidEntry[]>(STORE_KEY, [])); }, []);
-
     const handleSave = () => {
         if (!form.patientName.trim()) return;
         const newItem: FirstAidEntry = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ dateTime: "", patientName: "", location: "", injuryIllness: "", treatmentGiven: "", administeredBy: "", outcome: "returned_to_work", followUp: "" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: FirstAidEntry) => {
         const pdf = new SafeGuardPDF();

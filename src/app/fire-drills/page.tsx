@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Flame, ArrowLeft, Trash2, Users, Clock, FileDown } from "lucide-react";
-import { loadFromStore, saveToStore, generateId, formatDate } from "@/lib/utils";
+import { generateId, formatDate } from "@/lib/utils";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface FireDrill {
     id: string;
@@ -29,7 +30,7 @@ const STORE_KEY = "fire_drills";
 const DRILL_TYPES = ["Planned Evacuation", "Unannounced Drill", "Partial Evacuation", "Night Shift Drill", "Weekend Drill"];
 
 export default function FireDrillPage() {
-    const [items, setItems] = useState<FireDrill[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<FireDrill>({ module: "fire_drills", storeKey: "fire_drills" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         date: "", time: "", location: "", drillType: "", alarmActivatedBy: "",
@@ -38,19 +39,15 @@ export default function FireDrillPage() {
         outcome: "pass" as FireDrill["outcome"],
     });
 
-    useEffect(() => { setItems(loadFromStore<FireDrill[]>(STORE_KEY, [])); }, []);
-
     const handleSave = () => {
         if (!form.date || !form.location.trim()) return;
         const newItem: FireDrill = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ date: "", time: "", location: "", drillType: "", alarmActivatedBy: "", evacuationTime: "", totalEvacuees: "", assemblyPoint: "", allAccountedFor: true, fireWardens: "", issuesIdentified: "", correctiveActions: "", conductedBy: "", outcome: "pass" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: FireDrill) => {
         const pdf = new SafeGuardPDF();

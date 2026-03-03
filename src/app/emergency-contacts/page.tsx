@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Plus, Phone, ArrowLeft, Trash2, PhoneCall } from "lucide-react";
-import { loadFromStore, saveToStore, generateId } from "@/lib/utils";
+import { generateId } from "@/lib/utils";
+import { useModuleData } from "@/hooks/useModuleData";
 
 interface EmergencyContact {
     id: string;
@@ -32,35 +33,30 @@ const DEFAULT_CONTACTS: Omit<EmergencyContact, "id" | "createdAt">[] = [
 ];
 
 export default function EmergencyContactsPage() {
-    const [items, setItems] = useState<EmergencyContact[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<EmergencyContact>({ module: "emergency_contacts", storeKey: "emergency_contacts" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         name: "", role: "", phone: "", alternatePhone: "", category: "", notes: "",
     });
 
+    // Pre-populate default emergency contacts if none exist
     useEffect(() => {
-        const stored = loadFromStore<EmergencyContact[]>(STORE_KEY, []);
-        if (stored.length === 0) {
-            // Initialize with defaults
-            const defaults = DEFAULT_CONTACTS.map((c) => ({ ...c, id: generateId(), createdAt: new Date().toISOString() }));
-            setItems(defaults);
-            saveToStore(STORE_KEY, defaults);
-        } else {
-            setItems(stored);
+        if (!loading && items.length === 0) {
+            DEFAULT_CONTACTS.forEach((c) => {
+                addItem({ ...c, id: generateId(), createdAt: new Date().toISOString() });
+            });
         }
-    }, []);
+    }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleSave = () => {
         if (!form.name.trim() || !form.phone.trim()) return;
         const newItem: EmergencyContact = { id: generateId(), ...form, createdAt: new Date().toISOString() };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({ name: "", role: "", phone: "", alternatePhone: "", category: "", notes: "" });
     };
 
-    const handleDelete = (id: string) => { const updated = items.filter((i) => i.id !== id); setItems(updated); saveToStore(STORE_KEY, updated); };
+    const handleDelete = (id: string) => removeItem(id);
 
     const categoryColor = (cat: string) => {
         if (cat.includes("Emergency")) return "var(--color-safety-red)";

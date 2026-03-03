@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
     Plus,
     ClipboardCheck,
@@ -10,9 +10,8 @@ import {
     FileDown,
 } from "lucide-react";
 import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { useModuleData } from "@/hooks/useModuleData";
 import {
-    loadFromStore,
-    saveToStore,
     generateId,
     calculateRiskLevel,
     getRiskBadgeClass,
@@ -43,7 +42,7 @@ interface RiskAssessment {
 const STORE_KEY = "risk_assessments";
 
 export default function RiskAssessmentPage() {
-    const [items, setItems] = useState<RiskAssessment[]>([]);
+    const { items, loading, addItem, removeItem } = useModuleData<RiskAssessment>({ module: "risk_assessments", storeKey: "risk_assessments" });
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
         title: "",
@@ -60,10 +59,6 @@ export default function RiskAssessmentPage() {
         reviewDate: "",
     });
 
-    useEffect(() => {
-        setItems(loadFromStore<RiskAssessment[]>(STORE_KEY, []));
-    }, []);
-
     const handleSave = () => {
         if (!form.title.trim()) return;
         const riskLevel = calculateRiskLevel(form.likelihood, form.severity);
@@ -76,9 +71,7 @@ export default function RiskAssessmentPage() {
             createdAt: new Date().toISOString(),
             status: "active",
         };
-        const updated = [newItem, ...items];
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
+        addItem(newItem);
         setShowForm(false);
         setForm({
             title: "", location: "", assessor: "", hazardDescription: "",
@@ -87,11 +80,7 @@ export default function RiskAssessmentPage() {
         });
     };
 
-    const handleDelete = (id: string) => {
-        const updated = items.filter((i) => i.id !== id);
-        setItems(updated);
-        saveToStore(STORE_KEY, updated);
-    };
+    const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: RiskAssessment) => {
         const pdf = new SafeGuardPDF();
