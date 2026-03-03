@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
@@ -33,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+      </head>
       <body
         className={`${inter.className} min-h-dvh antialiased flex`}
         style={{ background: "var(--color-bg-primary)" }}
@@ -49,6 +53,9 @@ export default function RootLayout({
 
         {/* Mobile bottom nav */}
         <BottomNav />
+
+        {/* PWA service worker */}
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );
