@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { HardHat, Trash2, Download, RotateCcw } from "lucide-react";
+import { HardHat, Trash2, Download, RotateCcw, LogOut, User } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function SettingsPage() {
     const [showConfirm, setShowConfirm] = useState(false);
+    const { user, signOut } = useAuth();
 
     const clearAllData = () => {
         if (typeof window === "undefined") return;
@@ -50,8 +52,29 @@ export default function SettingsPage() {
                     </div>
                 </div>
                 <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
-                    A comprehensive mobile toolkit for health and safety professionals. Create risk assessments, COSHH records, RAMS, incident reports, and more — all stored locally on your device.
+                    A comprehensive mobile toolkit for health and safety professionals. Create risk assessments, COSHH records, RAMS, incident reports, and more.
                 </p>
+            </div>
+
+            {/* Account */}
+            <div className="mb-4">
+                <p className="section-header px-1">Account</p>
+                <div className="space-y-2">
+                    <div className="card card-compact flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: "rgba(249,115,22,0.15)" }}>
+                                <User size={16} style={{ color: "var(--color-accent)" }} />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium" style={{ color: "var(--color-text-primary)" }}>{user?.user_metadata?.full_name || "User"}</p>
+                                <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>{user?.email}</p>
+                            </div>
+                        </div>
+                        <button onClick={signOut} className="btn btn-ghost" style={{ padding: "0.5rem 1rem", color: "var(--color-safety-red)" }}>
+                            <LogOut size={14} /> Sign Out
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* Data Management */}
