@@ -62,7 +62,7 @@ export default function SettingsPage() {
                 <div className="space-y-2">
                     <div className="card card-compact flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: "rgba(249,115,22,0.15)" }}>
+                            <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: "var(--color-accent-subtle)" }}>
                                 <User size={16} style={{ color: "var(--color-accent)" }} />
                             </div>
                             <div>

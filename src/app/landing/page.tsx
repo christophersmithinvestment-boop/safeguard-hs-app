@@ -93,7 +93,7 @@ export default function LandingPage() {
                 {/* Gradient orbs */}
                 <div style={{
                     position: "absolute", top: -200, left: "50%", transform: "translateX(-50%)",
-                    width: 800, height: 600, background: "radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%)",
+                    width: 800, height: 600, background: "radial-gradient(ellipse, rgba(20,184,166,0.12) 0%, transparent 70%)",
                     pointerEvents: "none",
                 }} />
                 <div style={{
@@ -106,8 +106,8 @@ export default function LandingPage() {
                     {/* Badge */}
                     <div className="inline-flex items-center gap-2 mb-6" style={{
                         padding: "0.375rem 1rem", borderRadius: 999,
-                        background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)",
-                        fontSize: "0.8125rem", fontWeight: 600, color: "#fb923c",
+                        background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.2)",
+                        fontSize: "0.8125rem", fontWeight: 600, color: "#2dd4bf",
                     }}>
                         <Star size={14} /> Now with cloud sync
                     </div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
                         Health & Safety
                         <br />
                         <span style={{
-                            background: "linear-gradient(135deg, #f97316, #fb923c, #f59e0b)",
+                            background: "linear-gradient(135deg, #14b8a6, #2dd4bf, #0d9488)",
                             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                         }}>
                             Made Simple
@@ -154,7 +154,7 @@ export default function LandingPage() {
             {/* ─── Features Grid ──────────────────────────────────────── */}
             <section id="features" style={{ maxWidth: 1200, margin: "0 auto", padding: "5rem 1.5rem" }}>
                 <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-                    <p className="section-header" style={{ color: "#f97316", letterSpacing: "0.12em" }}>MODULES</p>
+                    <p className="section-header" style={{ color: "#14b8a6", letterSpacing: "0.12em" }}>MODULES</p>
                     <h2 style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em" }}>
                         Everything You Need
                     </h2>
@@ -249,8 +249,8 @@ export default function LandingPage() {
                             key={plan.name}
                             style={{
                                 padding: "2rem",
-                                background: plan.popular ? "linear-gradient(135deg, rgba(249,115,22,0.08), rgba(249,115,22,0.02))" : "var(--color-bg-card)",
-                                border: plan.popular ? "2px solid rgba(249,115,22,0.4)" : "1px solid var(--color-border)",
+                                background: plan.popular ? "linear-gradient(135deg, rgba(20,184,166,0.08), rgba(20,184,166,0.02))" : "var(--color-bg-card)",
+                                border: plan.popular ? "2px solid rgba(20,184,166,0.4)" : "1px solid var(--color-border)",
                                 borderRadius: 20,
                                 position: "relative",
                                 transition: "all 0.25s ease",
@@ -259,7 +259,7 @@ export default function LandingPage() {
                             {plan.popular && (
                                 <div style={{
                                     position: "absolute", top: -1, left: "50%", transform: "translate(-50%, -50%)",
-                                    background: "linear-gradient(135deg, #f97316, #ea580c)",
+                                    background: "linear-gradient(135deg, #14b8a6, #0d9488)",
                                     color: "white", fontSize: "0.6875rem", fontWeight: 700,
                                     padding: "0.25rem 1rem", borderRadius: 999, letterSpacing: "0.05em",
                                 }}>
@@ -278,7 +278,7 @@ export default function LandingPage() {
                             <ul style={{ listStyle: "none", marginBottom: "2rem" }} className="space-y-2.5">
                                 {plan.features.map((f) => (
                                     <li key={f} className="flex items-center gap-2.5" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                                        <CheckCircle2 size={16} style={{ color: plan.popular ? "#f97316" : "#10b981", flexShrink: 0 }} />
+                                        <CheckCircle2 size={16} style={{ color: plan.popular ? "#14b8a6" : "#10b981", flexShrink: 0 }} />
                                         {f}
                                     </li>
                                 ))}
@@ -301,8 +301,8 @@ export default function LandingPage() {
                 <div style={{
                     maxWidth: 960, margin: "0 auto", padding: "3.5rem 2rem", textAlign: "center",
                     borderRadius: 24,
-                    background: "linear-gradient(135deg, rgba(249,115,22,0.12), rgba(234,88,12,0.06))",
-                    border: "1px solid rgba(249,115,22,0.2)",
+                    background: "linear-gradient(135deg, rgba(20,184,166,0.12), rgba(13,148,136,0.06))",
+                    border: "1px solid rgba(20,184,166,0.2)",
                 }}>
                     <h2 style={{ fontSize: "clamp(1.5rem, 3.5vw, 2rem)", fontWeight: 800, marginBottom: "1rem" }}>
                         Ready to Transform Your Safety Management?

@@ -45,10 +45,10 @@ export function BottomNav() {
                             className="flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all duration-200"
                             style={{
                                 color: isActive
-                                    ? "var(--color-safety-orange)"
+                                    ? "var(--color-accent)"
                                     : "var(--color-text-muted)",
                                 background: isActive
-                                    ? "rgba(249, 115, 22, 0.08)"
+                                    ? "var(--color-accent-subtle)"
                                     : "transparent",
                                 minWidth: "60px",
                             }}
