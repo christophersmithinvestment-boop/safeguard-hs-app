@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Search, ArrowLeft, Trash2, Check, X, Minus, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface ChecklistItem {
@@ -130,7 +130,7 @@ export default function InspectionsPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: Inspection) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Site Inspection Report", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Inspection Details");
         pdf.addKeyValue("Site Name", item.siteName);

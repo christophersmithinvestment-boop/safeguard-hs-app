@@ -1,4 +1,4 @@
-const CACHE_NAME = "safeguard-v1";
+const CACHE_NAME = "dutydocs-v1";
 
 // Core app shell to pre-cache
 const APP_SHELL = [

@@ -22,13 +22,13 @@ export function ServiceWorkerRegistration() {
                             navigator.serviceWorker.controller
                         ) {
                             // New version available — will activate on next visit
-                            console.log("[SafeGuard] New version available. Refresh to update.");
+                            console.log("[DutyDocs] New version available. Refresh to update.");
                         }
                     });
                 });
             })
             .catch((err) => {
-                console.warn("[SafeGuard] SW registration failed:", err);
+                console.warn("[DutyDocs] SW registration failed:", err);
             });
     }, []);
 

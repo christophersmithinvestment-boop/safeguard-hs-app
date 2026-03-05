@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, HardHat, ArrowLeft, Trash2, AlertCircle, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface PPERecord {
@@ -51,7 +51,7 @@ export default function PPERegisterPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: PPERecord) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("PPE Record", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Equipment Details");
         pdf.addKeyValue("PPE Type", item.ppeType);

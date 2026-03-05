@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, GraduationCap, ArrowLeft, Trash2, AlertCircle, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface TrainingRecord {
@@ -58,7 +58,7 @@ export default function TrainingRecordsPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: TrainingRecord) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Training Record", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Employee Details");
         pdf.addKeyValue("Employee", item.employeeName);

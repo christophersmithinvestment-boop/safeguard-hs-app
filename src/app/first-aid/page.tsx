@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, HeartPulse, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDateTime } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDateTime } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface FirstAidEntry {
@@ -48,7 +48,7 @@ export default function FirstAidPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: FirstAidEntry) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("First Aid Record", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Incident Details");
         pdf.addKeyValue("Date & Time", pdfDateTime(item.dateTime));

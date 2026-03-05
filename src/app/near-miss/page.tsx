@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, TriangleAlert, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDateTime } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDateTime } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface NearMiss {
@@ -46,7 +46,7 @@ export default function NearMissPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: NearMiss) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Near Miss Report", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Near Miss Details");
         pdf.addKeyValue("Date & Time", pdfDateTime(item.dateTime));

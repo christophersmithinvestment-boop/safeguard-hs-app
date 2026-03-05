@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Megaphone, ArrowLeft, Trash2, Users, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface ToolboxTalk {
@@ -55,7 +55,7 @@ export default function ToolboxTalksPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: ToolboxTalk) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Toolbox Talk Record", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Talk Details");
         pdf.addKeyValue("Topic", item.topic);

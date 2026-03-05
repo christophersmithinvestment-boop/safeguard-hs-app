@@ -9,7 +9,7 @@ import {
     Trash2,
     FileDown,
 } from "lucide-react";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 import {
     generateId,
@@ -83,7 +83,7 @@ export default function RiskAssessmentPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: RiskAssessment) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Risk Assessment", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Assessment Details");
         pdf.addKeyValue("Title", item.title);

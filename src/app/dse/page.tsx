@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Monitor, ArrowLeft, Trash2, Check, X, Minus, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface DSEItem {
@@ -150,7 +150,7 @@ export default function DSEPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: DSEAssessment) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("DSE Assessment", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Assessment Details");
         pdf.addKeyValue("Employee", item.employeeName);

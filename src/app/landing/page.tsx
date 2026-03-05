@@ -81,7 +81,7 @@ export default function LandingPage() {
                         >
                             <Shield size={18} color="white" />
                         </div>
-                        <span className="text-lg font-bold" style={{ color: "var(--color-text-primary)" }}>SafeGuard</span>
+                        <span className="text-lg font-bold" style={{ color: "var(--color-text-primary)" }}>DutyDocs</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Link href="/login" className="btn btn-ghost" style={{ fontSize: "0.8125rem", padding: "0.5rem 1rem" }}>Sign In</Link>
@@ -312,7 +312,7 @@ export default function LandingPage() {
                         Ready to Transform Your Safety Management?
                     </h2>
                     <p style={{ color: "var(--color-text-secondary)", maxWidth: 500, margin: "0 auto 2rem", fontSize: "1.0625rem" }}>
-                        Join thousands of safety professionals who trust SafeGuard to keep their teams safe and their paperwork sorted.
+                        Join thousands of safety professionals who trust DutyDocs to keep their teams safe and their paperwork sorted.
                     </p>
                     <Link href="/signup" className="btn btn-primary" style={{ padding: "0.875rem 2.5rem", fontSize: "1rem" }}>
                         Get Started Free <ArrowRight size={16} />
@@ -333,10 +333,10 @@ export default function LandingPage() {
                         >
                             <Shield size={14} color="white" />
                         </div>
-                        <span className="text-sm font-bold">SafeGuard</span>
+                        <span className="text-sm font-bold">DutyDocs</span>
                     </div>
                     <p style={{ fontSize: "0.8125rem", color: "var(--color-text-muted)" }}>
-                        © {new Date().getFullYear()} SafeGuard. All rights reserved.
+                        © {new Date().getFullYear()} DutyDocs. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4" style={{ fontSize: "0.8125rem", color: "var(--color-text-muted)" }}>
                         <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Privacy</a>

@@ -80,7 +80,7 @@ export default function MorePage() {
                 </div>
                 <div>
                     <h1 className="text-xl font-bold" style={{ color: "var(--color-text-primary)" }}>
-                        SafeGuard
+                        DutyDocs
                     </h1>
                     <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
                         All Tools & Modules

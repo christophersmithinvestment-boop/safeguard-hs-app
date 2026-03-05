@@ -47,7 +47,7 @@ export default function SettingsPage() {
                         <HardHat size={24} color="white" />
                     </div>
                     <div>
-                        <h2 className="text-base font-bold" style={{ color: "var(--color-text-primary)" }}>SafeGuard</h2>
+                        <h2 className="text-base font-bold" style={{ color: "var(--color-text-primary)" }}>DutyDocs</h2>
                         <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>Health & Safety Management v1.0</p>
                     </div>
                 </div>
@@ -126,7 +126,7 @@ export default function SettingsPage() {
                     Built with ❤️ for workplace safety
                 </p>
                 <p className="text-[10px] mt-1" style={{ color: "var(--color-text-muted)" }}>
-                    © 2026 SafeGuard H&S Management
+                    © 2026 DutyDocs H&S Management
                 </p>
             </div>
         </div>

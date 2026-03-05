@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Dumbbell, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, calculateRiskLevel, getRiskBadgeClass, formatDate, type RiskLevel } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface ManualHandlingAssessment {
@@ -56,7 +56,7 @@ export default function ManualHandlingPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: ManualHandlingAssessment) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Manual Handling Assessment", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Task Details");
         pdf.addKeyValue("Task Description", item.taskDescription);

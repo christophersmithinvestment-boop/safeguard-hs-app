@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Flame, ArrowLeft, Trash2, Users, Clock, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface FireDrill {
@@ -50,7 +50,7 @@ export default function FireDrillPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: FireDrill) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Fire Drill Record", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Drill Details");
         pdf.addKeyValue("Date", pdfDate(item.date));

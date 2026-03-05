@@ -20,7 +20,7 @@ export async function loadRecords<T>(module: string): Promise<T[]> {
         .order("created_at", { ascending: false });
 
     if (error) {
-        console.error(`[SafeGuard] Failed to load ${module}:`, error.message);
+        console.error(`[DutyDocs] Failed to load ${module}:`, error.message);
         return [];
     }
 
@@ -45,7 +45,7 @@ export async function saveRecord<T extends { id: string }>(
     });
 
     if (error) {
-        console.error(`[SafeGuard] Failed to save ${module}:`, error.message);
+        console.error(`[DutyDocs] Failed to save ${module}:`, error.message);
         return false;
     }
     return true;
@@ -69,7 +69,7 @@ export async function deleteRecord(module: string, recordId: string): Promise<bo
     const { error } = await supabase.from("records").delete().eq("id", row.id);
 
     if (error) {
-        console.error(`[SafeGuard] Failed to delete:`, error.message);
+        console.error(`[DutyDocs] Failed to delete:`, error.message);
         return false;
     }
     return true;
@@ -99,7 +99,7 @@ export async function updateRecord<T extends { id: string }>(
         .eq("id", row.id);
 
     if (error) {
-        console.error(`[SafeGuard] Failed to update:`, error.message);
+        console.error(`[DutyDocs] Failed to update:`, error.message);
         return false;
     }
     return true;
@@ -136,7 +136,7 @@ export async function migrateFromLocalStorage(module: string, storeKey: string):
 
         const { error } = await supabase.from("records").insert(rows);
         if (error) {
-            console.error(`[SafeGuard] Migration failed for ${module}:`, error.message);
+            console.error(`[DutyDocs] Migration failed for ${module}:`, error.message);
             return 0;
         }
 

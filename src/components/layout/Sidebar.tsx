@@ -93,7 +93,7 @@ export function Sidebar({ className }: { className?: string }) {
                 </div>
                 <div>
                     <h1 className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
-                        SafeGuard
+                        DutyDocs
                     </h1>
                     <p className="text-[10px] font-medium" style={{ color: "var(--color-text-muted)" }}>
                         H&S Management

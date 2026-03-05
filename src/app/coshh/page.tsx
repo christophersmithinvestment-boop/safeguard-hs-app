@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, FlaskConical, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface COSHHAssessment {
@@ -68,7 +68,7 @@ export default function COSHHPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: COSHHAssessment) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("COSHH Assessment", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Substance Details");
         pdf.addKeyValue("Substance Name", item.substanceName);

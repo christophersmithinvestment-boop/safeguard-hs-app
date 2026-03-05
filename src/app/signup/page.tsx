@@ -109,7 +109,7 @@ export default function SignupPage() {
                         className="text-sm mt-1"
                         style={{ color: "var(--color-text-muted)" }}
                     >
-                        Start your free SafeGuard trial
+                        Start your free DutyDocs trial
                     </p>
                 </div>
 

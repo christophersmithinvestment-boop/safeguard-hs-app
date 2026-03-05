@@ -1,4 +1,4 @@
--- SafeGuard Database Schema
+-- DutyDocs Database Schema
 -- Run this in the Supabase SQL Editor (Dashboard → SQL Editor → New Query)
 
 -- ─── Records table ────────────────────────────────────────────────

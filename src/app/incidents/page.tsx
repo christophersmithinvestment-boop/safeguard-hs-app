@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, AlertTriangle, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDateTime } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDateTime } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface Incident {
@@ -61,7 +61,7 @@ export default function IncidentsPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: Incident) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Incident Report", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Incident Details");
         pdf.addKeyValue("Date & Time", pdfDateTime(item.dateTime));

@@ -6,13 +6,13 @@ import { AppShell } from "@/components/AppShell";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 export const metadata: Metadata = {
-  title: "SafeGuard – Health & Safety",
+  title: "DutyDocs – Health & Safety",
   description: "Comprehensive mobile health and safety management app",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "SafeGuard",
+    title: "DutyDocs",
   },
 };
 

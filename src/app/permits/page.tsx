@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, ShieldCheck, ArrowLeft, Trash2, FileDown } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
-import { SafeGuardPDF, pdfDate } from "@/lib/pdf-generator";
+import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
 
 interface Permit {
@@ -61,7 +61,7 @@ export default function PermitsPage() {
     const handleDelete = (id: string) => removeItem(id);
 
     const handleExportPDF = (item: Permit) => {
-        const pdf = new SafeGuardPDF();
+        const pdf = new DutyDocsPDF();
         pdf.addHeader("Permit to Work", `Ref: ${item.id.split("-")[0]}`);
         pdf.addSection("Permit Details");
         pdf.addKeyValue("Permit Type", item.permitType);

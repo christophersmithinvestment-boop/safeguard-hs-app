@@ -56,7 +56,7 @@ export default function LoginPage() {
                         className="text-2xl font-bold"
                         style={{ color: "var(--color-text-primary)" }}
                     >
-                        SafeGuard
+                        DutyDocs
                     </h1>
                     <p
                         className="text-sm mt-1"
