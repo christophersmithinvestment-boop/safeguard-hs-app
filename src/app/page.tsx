@@ -4,7 +4,8 @@ import { useAuth } from "@/components/AuthProvider";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Shield, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { DutyDocsLogo } from "@/components/DutyDocsLogo";
 
 /**
  * Root route — redirects based on auth state:
@@ -32,12 +33,7 @@ export default function RootPage() {
       className="min-h-dvh flex flex-col items-center justify-center gap-4"
       style={{ background: "var(--color-bg-primary)" }}
     >
-      <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center"
-        style={{ background: "rgba(249,115,22,0.15)" }}
-      >
-        <Shield size={28} style={{ color: "var(--color-accent)" }} />
-      </div>
+      <DutyDocsLogo size={48} />
       <Loader2
         size={20}
         className="animate-spin"

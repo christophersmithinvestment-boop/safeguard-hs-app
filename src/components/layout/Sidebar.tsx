@@ -22,6 +22,7 @@ import {
     Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DutyDocsLogo } from "@/components/DutyDocsLogo";
 
 const navGroups = [
     {
@@ -83,14 +84,7 @@ export function Sidebar({ className }: { className?: string }) {
         >
             {/* Logo */}
             <div className="flex items-center gap-3 px-5 py-5 border-b" style={{ borderColor: "var(--color-border)" }}>
-                <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{
-                        background: "linear-gradient(135deg, var(--color-safety-orange), var(--color-safety-orange-dark))",
-                    }}
-                >
-                    <HardHat size={20} color="white" />
-                </div>
+                <DutyDocsLogo size={36} />
                 <div>
                     <h1 className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
                         DutyDocs
@@ -149,6 +143,6 @@ export function Sidebar({ className }: { className?: string }) {
                     <span>Settings</span>
                 </Link>
             </div>
-        </aside>
+        </aside >
     );
 }

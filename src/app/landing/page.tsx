@@ -7,6 +7,7 @@ import {
     Flame, HeartPulse, HardHat, GraduationCap, Phone, ArrowRight,
     CheckCircle2, Zap, Lock, ChevronRight, Star,
 } from "lucide-react";
+import { DutyDocsLogo } from "@/components/DutyDocsLogo";
 
 const FEATURES = [
     { icon: ClipboardCheck, label: "Risk Assessments", desc: "5×5 matrix scoring with residual risk tracking", color: "#f97316" },
@@ -75,12 +76,7 @@ export default function LandingPage() {
             >
                 <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.5rem" }} className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-2.5">
-                        <div
-                            className="w-9 h-9 rounded-xl flex items-center justify-center"
-                            style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
-                        >
-                            <Shield size={18} color="white" />
-                        </div>
+                        <DutyDocsLogo size={36} />
                         <span className="text-lg font-bold" style={{ color: "var(--color-text-primary)" }}>DutyDocs</span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -327,12 +323,7 @@ export default function LandingPage() {
             }}>
                 <div style={{ maxWidth: 1200, margin: "0 auto" }} className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                        <div
-                            className="w-7 h-7 rounded-lg flex items-center justify-center"
-                            style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
-                        >
-                            <Shield size={14} color="white" />
-                        </div>
+                        <DutyDocsLogo size={28} />
                         <span className="text-sm font-bold">DutyDocs</span>
                     </div>
                     <p style={{ fontSize: "0.8125rem", color: "var(--color-text-muted)" }}>

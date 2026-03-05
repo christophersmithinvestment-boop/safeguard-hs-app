@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Shield, Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
+import { Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
 import Link from "next/link";
+import { DutyDocsLogo } from "@/components/DutyDocsLogo";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -46,11 +47,8 @@ export default function LoginPage() {
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <div
-                        className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                        style={{ background: "rgba(249,115,22,0.15)" }}
-                    >
-                        <Shield size={32} style={{ color: "var(--color-accent)" }} />
+                    <div className="flex items-center justify-center mx-auto mb-4">
+                        <DutyDocsLogo size={56} />
                     </div>
                     <h1
                         className="text-2xl font-bold"
