@@ -5,7 +5,7 @@ import {
     Shield, ClipboardCheck, FlaskConical, FileText, AlertTriangle,
     TriangleAlert, Search, Megaphone, ShieldCheck, Monitor, Dumbbell,
     Flame, HeartPulse, HardHat, GraduationCap, Phone, ArrowRight,
-    CheckCircle2, Zap, Lock, ChevronRight, Star,
+    CheckCircle2, Zap, Lock, ChevronRight, Star, Package,
 } from "lucide-react";
 import { DutyDocsLogo } from "@/components/DutyDocsLogo";
 
@@ -24,12 +24,13 @@ const FEATURES = [
     { icon: HeartPulse, label: "First Aid Log", desc: "Track treatments and restock supplies", color: "#ef4444" },
     { icon: HardHat, label: "PPE Register", desc: "Issue tracking with expiry date alerts", color: "#3b82f6" },
     { icon: GraduationCap, label: "Training Records", desc: "Certificate management with expiry warnings", color: "#10b981" },
+    { icon: Package, label: "Asset Register", desc: "Track equipment, inspections, and certification dates", color: "#14b8a6" },
     { icon: Phone, label: "Emergency Contacts", desc: "One-tap calling for key safety numbers", color: "#ef4444" },
 ];
 
 const STEPS = [
     { num: "01", title: "Sign Up Free", desc: "Create your account in seconds — no credit card required.", icon: Zap },
-    { num: "02", title: "Log Everything", desc: "Use any of 15 built-in modules to capture safety data from anywhere.", icon: ClipboardCheck },
+    { num: "02", title: "Log Everything", desc: "Use any of 16 built-in modules to capture safety data from anywhere.", icon: ClipboardCheck },
     { num: "03", title: "Stay Compliant", desc: "Export PDF reports, track expiries, and prove compliance effortlessly.", icon: CheckCircle2 },
 ];
 
@@ -48,7 +49,7 @@ const PRICING = [
         price: "£9.99",
         period: "/month",
         desc: "For growing businesses that need full compliance",
-        features: ["Unlimited records", "All 15 modules", "Cloud sync & backup", "Priority support", "Team collaboration", "Expiry alerts"],
+        features: ["Unlimited records", "All 16 modules", "Cloud sync & backup", "Priority support", "Team collaboration", "Expiry alerts"],
         cta: "Start Free Trial",
         popular: true,
     },
@@ -130,7 +131,7 @@ export default function LandingPage() {
                         fontSize: "clamp(1rem, 2.5vw, 1.25rem)", color: "var(--color-text-secondary)",
                         maxWidth: 600, margin: "0 auto 2.5rem", lineHeight: 1.6,
                     }}>
-                        15 purpose-built modules to manage risk assessments, incidents, inspections, training, and more — all from your phone or desktop.
+                        16 purpose-built modules to manage risk assessments, incidents, inspections, training, and more — all from your phone or desktop.
                     </p>
 
                     <div className="flex items-center justify-center gap-3 flex-wrap">
@@ -159,7 +160,7 @@ export default function LandingPage() {
                         Everything You Need
                     </h2>
                     <p style={{ color: "var(--color-text-secondary)", maxWidth: 500, margin: "0.75rem auto 0", fontSize: "1.0625rem" }}>
-                        15 specialised modules covering every area of workplace health & safety compliance.
+                        16 specialised modules covering every area of workplace health & safety compliance.
                     </p>
                 </div>
 

@@ -14,6 +14,7 @@ import {
     TriangleAlert,
     Settings,
     HardHat,
+    Package,
     Monitor,
     Dumbbell,
     Flame,
@@ -61,6 +62,7 @@ const navGroups = [
     {
         label: "Management",
         items: [
+            { href: "/asset-register", label: "Asset Register", icon: Package },
             { href: "/ppe-register", label: "PPE Register", icon: HardHat },
             { href: "/training-records", label: "Training Records", icon: GraduationCap },
             { href: "/emergency-contacts", label: "Emergency Contacts", icon: Phone },

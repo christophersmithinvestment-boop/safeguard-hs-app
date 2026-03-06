@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Search, ArrowLeft, Trash2, Check, X, Minus, FileDown } from "lucide-react";
+import { useState, useRef } from "react";
+import { Plus, Search, ArrowLeft, Trash2, Check, X, Minus, FileDown, Camera, Image, X as XIcon } from "lucide-react";
 import { generateId, formatDate } from "@/lib/utils";
 import { DutyDocsPDF, pdfDate } from "@/lib/pdf-generator";
 import { useModuleData } from "@/hooks/useModuleData";
@@ -25,6 +25,7 @@ interface Inspection {
     date: string;
     categories: InspectionCategory[];
     overallNotes: string;
+    photos: string[];
     score: number;
     totalChecked: number;
     totalPassed: number;
@@ -74,6 +75,49 @@ export default function InspectionsPage() {
     const [form, setForm] = useState({ siteName: "", inspectorName: "", date: "", overallNotes: "" });
     const [categories, setCategories] = useState<InspectionCategory[]>(() => buildCategories());
     const [expandedCat, setExpandedCat] = useState<string | null>(DEFAULT_CATEGORIES[0]?.name || null);
+    const [photos, setPhotos] = useState<string[]>([]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const compressImage = (file: File): Promise<string> => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new window.Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const MAX = 800;
+                    let w = img.width, h = img.height;
+                    if (w > MAX || h > MAX) {
+                        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                        else { w = Math.round(w * MAX / h); h = MAX; }
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext("2d")!;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL("image/jpeg", 0.7));
+                };
+                img.src = e.target?.result as string;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const handlePhotoCapture = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
+        const newPhotos: string[] = [];
+        for (let i = 0; i < files.length; i++) {
+            const compressed = await compressImage(files[i]);
+            newPhotos.push(compressed);
+        }
+        setPhotos((prev) => [...prev, ...newPhotos]);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
+    const removePhoto = (index: number) => {
+        setPhotos((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const toggleStatus = (catName: string, itemId: string) => {
         setCategories((prev) =>
@@ -116,6 +160,7 @@ export default function InspectionsPage() {
             id: generateId(),
             ...form,
             categories,
+            photos,
             score,
             totalChecked: checked.length,
             totalPassed: passed.length,
@@ -125,6 +170,7 @@ export default function InspectionsPage() {
         setShowForm(false);
         setForm({ siteName: "", inspectorName: "", date: "", overallNotes: "" });
         setCategories(buildCategories());
+        setPhotos([]);
     };
 
     const handleDelete = (id: string) => removeItem(id);
@@ -259,6 +305,59 @@ export default function InspectionsPage() {
                         <textarea className="input-field" placeholder="Any additional observations..." value={form.overallNotes} onChange={(e) => setForm({ ...form, overallNotes: e.target.value })} />
                     </div>
 
+                    {/* Photo Capture */}
+                    <div>
+                        <label className="input-label">Photos</label>
+                        <p className="text-xs mb-2" style={{ color: "var(--color-text-muted)" }}>
+                            Capture evidence photos directly from your camera
+                        </p>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            multiple
+                            onChange={handlePhotoCapture}
+                            style={{ display: "none" }}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="btn btn-secondary"
+                            style={{
+                                display: "flex", alignItems: "center", gap: "0.5rem",
+                                width: "100%", justifyContent: "center",
+                                padding: "0.75rem",
+                                border: "2px dashed var(--color-border-light)",
+                                borderRadius: "12px",
+                            }}
+                        >
+                            <Camera size={18} /> Take Photo or Upload
+                        </button>
+
+                        {photos.length > 0 && (
+                            <div className="grid grid-cols-3 gap-2 mt-3">
+                                {photos.map((photo, idx) => (
+                                    <div key={idx} style={{ position: "relative", borderRadius: "10px", overflow: "hidden", aspectRatio: "1", background: "var(--color-bg-secondary)" }}>
+                                        <img src={photo} alt={`Photo ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                        <button
+                                            onClick={() => removePhoto(idx)}
+                                            style={{
+                                                position: "absolute", top: 4, right: 4,
+                                                width: 24, height: 24, borderRadius: "50%",
+                                                background: "rgba(0,0,0,0.6)", border: "none",
+                                                color: "white", cursor: "pointer",
+                                                display: "flex", alignItems: "center", justifyContent: "center",
+                                            }}
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <button onClick={handleSave} className="btn btn-primary btn-full mt-4">
                         Save Inspection
                     </button>
@@ -303,6 +402,7 @@ export default function InspectionsPage() {
                                     <p className="text-sm font-semibold truncate" style={{ color: "var(--color-text-primary)" }}>{item.siteName}</p>
                                     <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
                                         {item.totalPassed}/{item.totalChecked} passed · {formatDate(item.createdAt)}
+                                        {item.photos?.length > 0 && ` · 📷 ${item.photos.length} photo${item.photos.length !== 1 ? "s" : ""}`}
                                     </p>
                                 </div>
                                 <button onClick={() => handleExportPDF(item)} className="btn btn-ghost" style={{ padding: "0.5rem", color: "var(--color-accent)" }} title="Export PDF">
