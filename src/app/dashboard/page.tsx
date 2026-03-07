@@ -388,9 +388,9 @@ export default function DashboardPage() {
                   <p className="text-[10px] font-medium" style={{ color: "var(--color-text-muted)" }}>Ensure p-shift talk is complete</p>
                 </div>
               </div>
-              <button className="btn btn-ghost btn-xs w-fit text-[var(--color-accent)]" style={{ padding: 0 }}>
+              <Link href="/toolbox-talks" className="btn btn-ghost btn-xs w-fit text-[var(--color-accent)] hover:underline" style={{ padding: 0 }}>
                 + Record Talk
-              </button>
+              </Link>
             </div>
 
             <div className="card p-4 flex flex-col gap-3" style={{ border: "1px solid var(--color-border-light)" }}>
@@ -401,9 +401,9 @@ export default function DashboardPage() {
                   <p className="text-[10px] font-medium" style={{ color: "var(--color-text-muted)" }}>Walk-through due today</p>
                 </div>
               </div>
-              <button className="btn btn-ghost btn-xs w-fit text-[var(--color-accent)]" style={{ padding: 0 }}>
+              <Link href="/inspections" className="btn btn-ghost btn-xs w-fit text-[var(--color-accent)] hover:underline" style={{ padding: 0 }}>
                 + Start Inspection
-              </button>
+              </Link>
             </div>
           </div>
         </div>
