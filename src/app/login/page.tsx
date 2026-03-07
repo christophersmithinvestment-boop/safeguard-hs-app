@@ -118,6 +118,15 @@ export default function LoginPage() {
                                 required
                             />
                         </div>
+                        <div className="flex justify-end mt-1">
+                            <Link
+                                href="/forgot-password"
+                                className="text-xs font-medium"
+                                style={{ color: "var(--color-text-muted)" }}
+                            >
+                                Forgot password?
+                            </Link>
+                        </div>
                     </div>
 
                     <button
