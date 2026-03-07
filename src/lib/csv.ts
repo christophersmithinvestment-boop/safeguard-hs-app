@@ -3,6 +3,7 @@ import { generateId } from "./utils";
 
 export function exportToCSV<T extends object>(data: T[], filename: string) {
     if (!data || data.length === 0) {
+        alert("No records to export. Please add some data first.");
         console.warn("No data to export");
         return;
     }
